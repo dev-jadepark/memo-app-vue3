@@ -4,7 +4,7 @@
       <button class="btn btn-primary" @click="add()">+ 추가</button>
     </div>
     <ul>
-      <li v-for="(d, idx) in state.data" :key="idx">{{ d }}</li>
+      <li v-for="(d, idx) in state.data" :key="idx" @click="edit(idx)">{{ d }}</li>
     </ul>
   </div>
 </template>
@@ -22,7 +22,7 @@
     margin: 0;
 
     li {
-      padding: px 10px;
+      padding: 10px 10px;
       margin: 5px;
       border: 1px solid #eee;
     }
@@ -54,8 +54,15 @@ export default {
       state.data = res.data;
     })
     
+    const edit = (idx) => {
+      const content = prompt("내용을 입력해주세요", state.data[idx]);
+      console.log(content);
+      axios.put("/api/memos/"+idx,{content}).then((res) => {
+        state.data = res.data;
+      });
+    }
 
-    return { state, add };
+    return { state, add, edit };
   },
 };
 </script>
